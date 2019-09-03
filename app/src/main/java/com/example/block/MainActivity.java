@@ -5,6 +5,7 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import android.content.Context;
 import android.content.SharedPreferences;
+import android.media.Image;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
@@ -15,28 +16,21 @@ import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import java.lang.ref.WeakReference;
+
 public class MainActivity extends AppCompatActivity {
 
-    private BlockView bView;
+    private static BlockView bView;
     private TextView bestView;
     private int bestScore;
     private TextView scoreView;
-    private ImageView restart;
-    private Handler handler = new Handler() {
-        @Override
-        public void handleMessage(@NonNull Message msg) {
-            switch(msg.what) {
-                case BlockView.MSG_SCORE:
-                    scoreView.setText(String.valueOf(bView.score));
-                    break;
-            }
-        }
-    };
+    public static Myhandler handler;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+        handler = new Myhandler(this);
         if(bView == null) {
             bView = findViewById(R.id.view);
             bView.attachHandler(handler);
@@ -47,7 +41,7 @@ public class MainActivity extends AppCompatActivity {
             scoreView = findViewById(R.id.scoreView);
             scoreView.setText("0");
         }
-        restart = findViewById(R.id.restart);
+        ImageView restart = findViewById(R.id.restart);
         restart.setOnTouchListener(new View.OnTouchListener(){
             @Override
             public boolean onTouch(View view, MotionEvent motionEvent) {
@@ -61,6 +55,30 @@ public class MainActivity extends AppCompatActivity {
     protected void onDestroy() {
         bView.clearMap();
         super.onDestroy();
+    }
+
+    public static class Myhandler extends Handler {
+        private final WeakReference<MainActivity> mActivity;
+
+        public Myhandler(MainActivity activity) {
+            mActivity = new WeakReference<>(activity);
+        }
+
+        @Override
+        public void handleMessage(@NonNull Message msg) {
+            MainActivity activity = mActivity.get();
+            if (activity != null) {
+                activity.handleMessage(msg);
+            }
+        }
+    }
+
+    private void handleMessage(Message msg){
+        switch(msg.what) {
+            case BlockView.MSG_SCORE:
+                scoreView.setText(String.valueOf(bView.score));
+                break;
+        }
     }
 
     private void game(final int time){
@@ -96,8 +114,7 @@ public class MainActivity extends AppCompatActivity {
     private void saveBestScore(int bestScore) {
         SharedPreferences preferences = getSharedPreferences("BlockGame", Context.MODE_PRIVATE);
         SharedPreferences.Editor editor = preferences.edit();
-        editor.putInt("BestScore", bestScore);
-        editor.commit();
+        editor.apply();
     }
 
     private int loadBestScore() {
