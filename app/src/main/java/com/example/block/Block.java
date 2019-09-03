@@ -5,6 +5,7 @@ import android.graphics.Bitmap;
 import android.graphics.Canvas;
 import android.graphics.Point;
 import android.graphics.Rect;
+import android.os.Handler;
 import android.util.Log;
 
 import java.util.ArrayList;
@@ -18,9 +19,12 @@ public class Block {
     private Bitmap blockBitmap;
     private Point moveVector;
 
-    public Block(ArrayList<Point> A, Bitmap B) {
+    private Handler handler;
+
+    public Block(ArrayList<Point> A, Bitmap B, Handler H) {
         pointList = A;
         blockBitmap = B;
+        handler = H;
         moveVector = new Point(0, 0);
     }
 
@@ -43,6 +47,7 @@ public class Block {
                 }
                 if(moveVector.x > 0) {moveVector.x--;}
                 else if(moveVector.x < 0) {moveVector.x++;}
+                if(moveVector.x == 0) {handler.sendEmptyMessage(MainActivity.MSG_CLEAR);}
             /* horizontal move */
             }
             else if(moveVector.y != 0){
@@ -53,6 +58,7 @@ public class Block {
                 }
                 if(moveVector.y > 0) {moveVector.y--;}
                 else if(moveVector.y < 0) {moveVector.y++;}
+                if(moveVector.y == 0) {handler.sendEmptyMessage(MainActivity.MSG_CLEAR);}
             /* normal draw */
             }
             else {
@@ -198,7 +204,7 @@ public class Block {
             synchronized (pointList){
                 pointList.removeAll(newList);
             }
-            Block b = new Block(newList, blockBitmap);
+            Block b = new Block(newList, blockBitmap, handler);
             b.addMap(blockMap);
             BlockView.blockList.add(b);
         }
@@ -244,7 +250,7 @@ public class Block {
             synchronized (pointList){
                 pointList.removeAll(newList);
             }
-            Block b = new Block(newList, blockBitmap);
+            Block b = new Block(newList, blockBitmap, handler);
             b.addMap(blockMap);
             BlockView.blockList.add(b);
         }

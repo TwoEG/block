@@ -24,7 +24,10 @@ public class MainActivity extends AppCompatActivity {
     private TextView bestView;
     private int bestScore;
     private TextView scoreView;
-    public static Myhandler handler;
+    private static Myhandler handler;
+
+    public static final int MSG_SCORE = 32;
+    public static final int MSG_CLEAR = 64;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -40,6 +43,8 @@ public class MainActivity extends AppCompatActivity {
             bestView.setText(String.valueOf(bestScore));
             scoreView = findViewById(R.id.scoreView);
             scoreView.setText("0");
+
+            bView.gamestate = BlockView.state.playing;
         }
         ImageView restart = findViewById(R.id.restart);
         restart.setOnTouchListener(new View.OnTouchListener(){
@@ -75,9 +80,12 @@ public class MainActivity extends AppCompatActivity {
 
     private void handleMessage(Message msg){
         switch(msg.what) {
-            case BlockView.MSG_SCORE:
+            case MSG_SCORE:
                 scoreView.setText(String.valueOf(bView.score));
                 break;
+            case MSG_CLEAR:
+                bView.clearLine();
+                bView.gamestate = BlockView.state.playing;
         }
     }
 
@@ -96,6 +104,7 @@ public class MainActivity extends AppCompatActivity {
             }, time);
         }
         else{
+            bView.gamestate = BlockView.state.stop;
             Toast.makeText(this, "game over", Toast.LENGTH_SHORT).show();
             if(bView.score > bestScore){
                 bestScore = bView.score;

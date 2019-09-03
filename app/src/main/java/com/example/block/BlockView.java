@@ -28,18 +28,16 @@ public class BlockView extends SurfaceView
     public static int startTop;             // right pixel
     public static int mapPixel;             // map pixel size
     public DrawingThread thread;
-
     public static int score = 0;
-    private static Handler handler = null;
 
-    public static final int MSG_SCORE = 32;
+    private static Handler handler = null;
 
     public static ArrayList<Block> blockList = new ArrayList<>();
     private static Block[][] blockMap = new Block[mapNum][mapNum];
     private static Point selected = new Point(0,0);
 
     public enum state{
-        playing, animating, clearDrawing
+        playing, animating, stop
     }
     public static state gamestate;
 
@@ -75,6 +73,7 @@ public class BlockView extends SurfaceView
         setOnTouchListener(new OnSwipeTouchListener(context){
             @Override
             public void onSwipe(float x, float y, int tag) {
+                if(gamestate != state.playing){return;}
                 int px = getX(x);
                 int py = getY(y);
                 if(px < 0 || px >= mapNum || py < 0 || py >= mapNum){return;}
@@ -84,19 +83,15 @@ public class BlockView extends SurfaceView
                     switch (tag) {
                         case 1:
                             b.moveTop(blockMap);
-                            clearLine();
                             break;
                         case 2:
                             b.moveBottom(blockMap);
-                            clearLine();
                             break;
                         case 4:
                             b.moveLeft(blockMap);
-                            clearLine();
                             break;
                         case 8:
                             b.moveRight(blockMap);
-                            clearLine();
                             break;
                     }
                 }
@@ -202,7 +197,7 @@ public class BlockView extends SurfaceView
             a.add(new Point(P.x + p.x, P.y + p.y));
         }
         Bitmap Bit = bitmapList[getColorIndex()];
-        Block b = new Block(a, Bit);
+        Block b = new Block(a, Bit, handler);
         b.addMap(blockMap);
         synchronized (blockList) {
             blockList.add(b);
@@ -282,7 +277,7 @@ public class BlockView extends SurfaceView
     private void updateScore(int cleared){
         score = score + cleared * cleared * 100;
         if(handler != null){
-            handler.sendEmptyMessage(MSG_SCORE);
+            handler.sendEmptyMessage(MainActivity.MSG_SCORE);
         }
     }
 
@@ -343,6 +338,7 @@ public class BlockView extends SurfaceView
         }
         clearMap();
         score = 0;
+        gamestate = state.playing;
     }
 
     public void clearMap(){
