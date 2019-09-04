@@ -36,6 +36,10 @@ public class BlockView extends SurfaceView
     private static Block[][] blockMap = new Block[mapNum][mapNum];
     private static Point selected = new Point(0,0);
 
+    public static ArrayList<Point> nextBlock;
+    public static Point nextPos;
+    public static Bitmap nextBit;
+
     public enum state{
         playing, animating, stop
     }
@@ -206,6 +210,84 @@ public class BlockView extends SurfaceView
         return true;
     }
 
+    public void getNextBlock(){
+        int posNum = BlockPos.L.size();
+        Random gen = new Random();
+        nextBlock = BlockPos.L.get(gen.nextInt(posNum));
+        nextBit = bitmapList[getColorIndex()];
+        nextPos = null;
+    }
+
+    public boolean makeNextBlock(){
+        if(!nextCheck()){
+            return false;
+        }
+        else{
+            ArrayList<Point> next = new ArrayList<>();
+            for(Point p : nextBlock){
+                next.add(new Point(p.x + nextPos.x , p.y + nextPos.y));
+            }
+            Block b = new Block(next, nextBit, handler);
+            b.addMap(blockMap);
+            synchronized (blockList) {
+                blockList.add(b);
+            }
+            synchronized (nextBlock){
+                getNextBlock();
+            }
+            clearLine();
+            return true;
+        }
+    }
+
+    /* check if nextBlock can fit blockMap. return false if cannot find place */
+    public boolean nextCheck(){
+        if(nextPos == null){
+            return findPlace();
+        }
+        else{
+            for(Point p : nextBlock){
+                if(blockMap[p.x + nextPos.x][p.y + nextPos.y] != null){
+                    return findPlace();
+                }
+            }
+            return true;
+        }
+    }
+
+    /* set NextPos with NextBlock. return false if cannot find place */
+    public boolean findPlace(){
+        ArrayList<Point> candidate = new ArrayList<>();
+        /* search map and add candidate points */
+        for(int x = 0; x < mapNum; x++){
+            for(int y = 0; y < mapNum; y++){
+                boolean fit = true;
+                for(Point p : nextBlock){
+                    if(p.x + x < 0 || p.x + x >= mapNum ||
+                            p.y + y < 0 || p.y + y >= mapNum){
+                        fit = false;
+                        break;
+                    }
+                    if(blockMap[p.x + x][p.y + y] != null){
+                        fit = false;
+                        break;
+                    }
+                }
+                if(fit){
+                    candidate.add(new Point(x, y));
+                }
+            }
+        }
+        int candNum = candidate.size();
+        if(candNum <= 0){
+            nextPos = null;
+            return false;
+        }
+        Random gen = new Random();
+        nextPos = candidate.get(gen.nextInt(candNum));
+        return true;
+    }
+
     public void clearLine(){
         int[] clearX = new int[mapNum];
         /* vertical search */
@@ -272,6 +354,7 @@ public class BlockView extends SurfaceView
             }
         }
         updateScore(cleared);
+        nextCheck();
     }
 
     private void updateScore(int cleared){
@@ -346,6 +429,9 @@ public class BlockView extends SurfaceView
             for(int y = 0; y < mapNum; y++){
                 blockMap[x][y] = null;
             }
+        }
+        synchronized (blockList){
+            blockList.clear();
         }
     }
 }

@@ -35,16 +35,8 @@ public class MainActivity extends AppCompatActivity {
         setContentView(R.layout.activity_main);
         handler = new Myhandler(this);
         if(bView == null) {
-            bView = findViewById(R.id.view);
-            bView.attachHandler(handler);
+            initialize();
             game(5000);
-            bestScore = loadBestScore();
-            bestView = findViewById(R.id.bestView);
-            bestView.setText(String.valueOf(bestScore));
-            scoreView = findViewById(R.id.scoreView);
-            scoreView.setText("0");
-
-            bView.gamestate = BlockView.state.playing;
         }
         ImageView restart = findViewById(R.id.restart);
         restart.setOnTouchListener(new View.OnTouchListener(){
@@ -58,7 +50,13 @@ public class MainActivity extends AppCompatActivity {
 
     @Override
     protected void onDestroy() {
-        bView.clearMap();
+        if(isFinishing()){
+            bView.clearMap();
+            bView.stopThread();
+        }
+        else{
+            bView.stopThread();
+        }
         super.onDestroy();
     }
 
@@ -84,13 +82,26 @@ public class MainActivity extends AppCompatActivity {
                 scoreView.setText(String.valueOf(bView.score));
                 break;
             case MSG_CLEAR:
+                bView.nextCheck();
                 bView.clearLine();
                 bView.gamestate = BlockView.state.playing;
         }
     }
 
+    private void initialize(){
+        bView = findViewById(R.id.view);
+        bView.attachHandler(handler);
+        bestScore = loadBestScore();
+        bestView = findViewById(R.id.bestView);
+        bestView.setText(String.valueOf(bestScore));
+        scoreView = findViewById(R.id.scoreView);
+        scoreView.setText("0");
+        bView.getNextBlock();
+        bView.gamestate = BlockView.state.playing;
+    }
+
     private void game(final int time){
-        if(bView.makeBlock()){
+        if(bView.makeNextBlock()){
             handler.postDelayed(new Runnable() {
                 @Override
                 public void run() {
@@ -123,7 +134,9 @@ public class MainActivity extends AppCompatActivity {
     private void saveBestScore(int bestScore) {
         SharedPreferences preferences = getSharedPreferences("BlockGame", Context.MODE_PRIVATE);
         SharedPreferences.Editor editor = preferences.edit();
-        editor.apply();
+        if(!editor.commit()){
+            Log.v("SAVE","FAIL");
+        }
     }
 
     private int loadBestScore() {
