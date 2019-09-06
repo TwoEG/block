@@ -36,7 +36,15 @@ public class MainActivity extends AppCompatActivity {
         handler = new Myhandler(this);
         if(bView == null) {
             initialize();
+            bestScore = loadBestScore();
+            bestView.setText(String.valueOf(bestScore));
+            scoreView.setText("0");
+            bView.getNextBlock();
+            bView.gamestate = BlockView.state.playing;
             game(5000);
+        }
+        else {
+            initialize();
         }
         ImageView restart = findViewById(R.id.restart);
         restart.setOnTouchListener(new View.OnTouchListener(){
@@ -91,13 +99,8 @@ public class MainActivity extends AppCompatActivity {
     private void initialize(){
         bView = findViewById(R.id.view);
         bView.attachHandler(handler);
-        bestScore = loadBestScore();
         bestView = findViewById(R.id.bestView);
-        bestView.setText(String.valueOf(bestScore));
         scoreView = findViewById(R.id.scoreView);
-        scoreView.setText("0");
-        bView.getNextBlock();
-        bView.gamestate = BlockView.state.playing;
     }
 
     private void game(final int time){

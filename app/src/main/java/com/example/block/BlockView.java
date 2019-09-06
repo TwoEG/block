@@ -166,50 +166,7 @@ public class BlockView extends SurfaceView
         stopThread();
     }
 
-    public boolean makeBlock(){
-        int posNum = BlockPos.L.size();
-        Random gen = new Random();
-        ArrayList<Point> selected = BlockPos.L.get(gen.nextInt(posNum));
-        ArrayList<Point> candidate = new ArrayList<>();
-        /* search map and add candidate points */
-        for(int x = 0; x < mapNum; x++){
-            for(int y = 0; y < mapNum; y++){
-                boolean fit = true;
-                for(Point p : selected){
-                    if(p.x + x < 0 || p.x + x >= mapNum ||
-                        p.y + y < 0 || p.y + y >= mapNum){
-                        fit = false;
-                        break;
-                    }
-                    if(blockMap[p.x + x][p.y + y] != null){
-                        fit = false;
-                        break;
-                    }
-                }
-                if(fit){
-                    candidate.add(new Point(x, y));
-                }
-            }
-        }
-        ArrayList<Point> a = new ArrayList<>();
-        int candNum = candidate.size();
-        if(candNum <= 0){
-            return false;
-        }
-        Point P = candidate.get(gen.nextInt(candNum));
-        for(Point p : selected){
-            a.add(new Point(P.x + p.x, P.y + p.y));
-        }
-        Bitmap Bit = bitmapList[getColorIndex()];
-        Block b = new Block(a, Bit, handler);
-        b.addMap(blockMap);
-        synchronized (blockList) {
-            blockList.add(b);
-        }
-        clearLine();
-        return true;
-    }
-
+    /* set character of next block */
     public void getNextBlock(){
         int posNum = BlockPos.L.size();
         Random gen = new Random();
@@ -218,6 +175,7 @@ public class BlockView extends SurfaceView
         nextPos = null;
     }
 
+    /* makes next block on map */
     public boolean makeNextBlock(){
         if(!nextCheck()){
             return false;
@@ -240,7 +198,7 @@ public class BlockView extends SurfaceView
         }
     }
 
-    /* check if nextBlock can fit blockMap. return false if cannot find place */
+    /* checks if nextBlock can fit blockMap. return false if cannot find place */
     public boolean nextCheck(){
         if(nextPos == null){
             return findPlace();
@@ -288,6 +246,7 @@ public class BlockView extends SurfaceView
         return true;
     }
 
+    /* vertical & horizontal line clear */
     public void clearLine(){
         int[] clearX = new int[mapNum];
         /* vertical search */
@@ -357,6 +316,7 @@ public class BlockView extends SurfaceView
         nextCheck();
     }
 
+    /* score update and send handler message */
     private void updateScore(int cleared){
         score = score + cleared * cleared * 100;
         if(handler != null){
@@ -364,6 +324,7 @@ public class BlockView extends SurfaceView
         }
     }
 
+    /* color index getter */
     private static int count = ColorSize;
     private static int[] leftIndex = new int[ColorSize];
     private int getColorIndex(){
@@ -386,6 +347,9 @@ public class BlockView extends SurfaceView
 
     public void attachHandler(Handler h){
         handler = h;
+        for(Block b : blockList){
+            b.attachHandler(h);
+        }
     }
 
     public static void clearedLineDraw(Canvas canvas){

@@ -260,4 +260,8 @@ public class Block {
         if(pointList.size() == 0) return true;
         else return false;
     }
+
+    public void attachHandler(Handler h){
+        handler = h;
+    }
 }
