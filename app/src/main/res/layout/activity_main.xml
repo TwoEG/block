@@ -4,7 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="#474747"
+    android:background="#BBBBBB"
     tools:context=".MainActivity">
 
     <com.example.block.BlockView
@@ -45,7 +45,7 @@
             android:layout_height="wrap_content"
             android:layout_margin="5dp"
             android:gravity="center_horizontal"
-            android:text="BEST"
+            android:text="@string/BEST"
             android:textSize="10dp" />
 
         <TextView
@@ -81,7 +81,7 @@
             android:layout_height="wrap_content"
             android:layout_margin="5dp"
             android:gravity="center_horizontal"
-            android:text="SCORE"
+            android:text="@string/SCORE"
             android:textSize="10dp" />
 
         <TextView
@@ -107,7 +107,39 @@
         app:layout_constraintEnd_toStartOf="@+id/ScoreLayout"
         app:layout_constraintStart_toEndOf="@+id/BestLayout"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="1.0"
+        app:layout_constraintVertical_bias="0.6"
         app:srcCompat="@drawable/ic_refresh_black_24dp" />
+
+    <ImageView
+        android:id="@+id/leaderboard"
+        android:layout_width="50dp"
+        android:layout_height="50dp"
+        android:layout_marginStart="8dp"
+        android:layout_marginTop="8dp"
+        android:layout_marginEnd="8dp"
+        android:layout_marginBottom="8dp"
+        android:background="@drawable/rounded_corner"
+        app:layout_constraintBottom_toTopOf="@+id/restart"
+        app:layout_constraintEnd_toEndOf="@+id/sign_in_button"
+        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.0"
+        app:srcCompat="@drawable/ic_equalizer_black_24dp" />
+
+    <ImageView
+        android:id="@+id/sign_in_button"
+        android:layout_width="50dp"
+        android:layout_height="50dp"
+        android:layout_marginStart="8dp"
+        android:layout_marginTop="8dp"
+        android:layout_marginEnd="8dp"
+        app:layout_constraintBottom_toTopOf="@+id/restart"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="1.0"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.0"
+        app:srcCompat="@drawable/common_google_signin_btn_icon_dark"/>
 
 </androidx.constraintlayout.widget.ConstraintLayout>

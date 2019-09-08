@@ -1,3 +1,7 @@
 <resources>
     <string name="app_name">block</string>
+    <string name="signin_other_error">Login Fail</string>
+
+    <string name="BEST">BEST</string>
+    <string name="SCORE">SCORE</string>
 </resources>

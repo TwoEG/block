@@ -18,15 +18,9 @@ public class DrawingThread extends Thread{
 
     private SurfaceHolder holder;
     private boolean stop = false;
-    private Bitmap block;
-
-    private static int ID = 0;
-    private int id;
 
     public DrawingThread(BlockView bview) {
         holder = bview.getHolder();
-        ID++;
-        id = ID;
     }
 
     public void stopThread() {
@@ -47,7 +41,7 @@ public class DrawingThread extends Thread{
             int mapPixel = BlockView.mapPixel;
             Canvas canvas = holder.lockCanvas();
             if(canvas != null) {
-                canvas.drawColor(Color.parseColor("#474747"));
+                canvas.drawColor(Color.parseColor("#BBBBBB"));
                 Paint paint = new Paint();
                 paint.setColor(Color.parseColor("#202020"));
                 RectF r = new RectF(startLeft, startTop, startLeft + mapPixel, startTop + mapPixel);

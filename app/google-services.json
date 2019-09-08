@@ -1,0 +1,56 @@
+{
+  "project_info": {
+    "project_number": "363936680075",
+    "firebase_url": "https://block-game-3a647.firebaseio.com",
+    "project_id": "block-game-3a647",
+    "storage_bucket": "block-game-3a647.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:363936680075:android:160371ce5eb1e152b5ec8e",
+        "android_client_info": {
+          "package_name": "com.example.block"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "363936680075-s5j6pq2t8ukb01qdguankgr2e6l6ibm8.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.example.block",
+            "certificate_hash": "4f6d8c1b96151ce0f72b42f385ecd708898f6d4b"
+          }
+        },
+        {
+          "client_id": "363936680075-supg6oo11nmsvd3qvcnpka8btu7nqd6a.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.example.block",
+            "certificate_hash": "11df7902b5223de5112f8d0dc1eff14a8a84a09e"
+          }
+        },
+        {
+          "client_id": "363936680075-p2vbjqigggdje6an7mggvn16ptkcmro6.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyA-GYbmFNsUg1jfuAiEd40n1blAUwvVIKU"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "363936680075-p2vbjqigggdje6an7mggvn16ptkcmro6.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

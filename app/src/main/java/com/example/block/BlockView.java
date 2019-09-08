@@ -83,7 +83,6 @@ public class BlockView extends SurfaceView
                 if(px < 0 || px >= mapNum || py < 0 || py >= mapNum){return;}
                 Block b = blockMap[px][py];
                 if(b == null){return;}
-                synchronized (b) {
                     switch (tag) {
                         case 1:
                             b.moveTop(blockMap);
@@ -98,7 +97,6 @@ public class BlockView extends SurfaceView
                             b.moveRight(blockMap);
                             break;
                     }
-                }
             }
 
             @Override
@@ -193,7 +191,7 @@ public class BlockView extends SurfaceView
             synchronized (nextBlock){
                 getNextBlock();
             }
-            clearLine();
+            handler.sendEmptyMessage(MainActivity.MSG_CLEAR);
             return true;
         }
     }

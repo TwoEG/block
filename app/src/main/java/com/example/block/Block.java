@@ -71,7 +71,7 @@ public class Block {
         }
     }
 
-    public int moveTop(Block[][] blockMap){
+    public void moveTop(Block[][] blockMap){
         deleteMap(blockMap);
         int delta = 1;
         while(true){
@@ -82,14 +82,17 @@ public class Block {
                     changePoints(d);
                     addMap(blockMap);
                     moveVector.y = delta - 1;
-                    return delta - 1;
+                    if(delta - 1 > 0){
+                        handler.sendEmptyMessage(MainActivity.MSG_MOVING);
+                    }
+                    return;
                 };
             }
             delta++;
         }
     }
 
-    public int moveBottom(Block[][] blockMap){
+    public void moveBottom(Block[][] blockMap){
         deleteMap(blockMap);
         int delta = 1;
         while(true){
@@ -100,14 +103,17 @@ public class Block {
                     changePoints(d);
                     addMap(blockMap);
                     moveVector.y = 1 - delta;
-                    return delta - 1;
+                    if(delta - 1 > 0){
+                        handler.sendEmptyMessage(MainActivity.MSG_MOVING);
+                    }
+                    return;
                 };
             }
             delta++;
         }
     }
 
-    public int moveLeft(Block[][] blockMap){
+    public void moveLeft(Block[][] blockMap){
         deleteMap(blockMap);
         int delta = 1;
         while(true){
@@ -118,14 +124,17 @@ public class Block {
                     changePoints(d);
                     addMap(blockMap);
                     moveVector.x = delta - 1;
-                    return delta - 1;
+                    if(delta - 1 > 0){
+                        handler.sendEmptyMessage(MainActivity.MSG_MOVING);
+                    }
+                    return;
                 };
             }
             delta++;
         }
     }
 
-    public int moveRight(Block[][] blockMap){
+    public void moveRight(Block[][] blockMap){
         deleteMap(blockMap);
         int delta = 1;
         while(true){
@@ -136,7 +145,10 @@ public class Block {
                     changePoints(d);
                     addMap(blockMap);
                     moveVector.x = 1 - delta;
-                    return delta - 1;
+                    if(delta - 1 > 0){
+                        handler.sendEmptyMessage(MainActivity.MSG_MOVING);
+                    }
+                    return;
                 };
             }
             delta++;
@@ -177,8 +189,7 @@ public class Block {
         if(isEmpty()) return;
         /* divide */
         ArrayList<Point> oldList = new ArrayList<>();
-        ArrayList<Point> newList = new ArrayList<>();
-        newList.addAll(pointList);
+        ArrayList<Point> newList = new ArrayList<>(pointList);
         newList.remove(pointList.get(0));
         oldList.add(pointList.get(0));
         boolean flag = true;
@@ -223,8 +234,7 @@ public class Block {
         if(isEmpty()) return;
         /* divide */
         ArrayList<Point> oldList = new ArrayList<>();
-        ArrayList<Point> newList = new ArrayList<>();
-        newList.addAll(pointList);
+        ArrayList<Point> newList = new ArrayList<>(pointList);
         newList.remove(pointList.get(0));
         oldList.add(pointList.get(0));
         boolean flag = true;
@@ -257,8 +267,7 @@ public class Block {
     }
 
     public boolean isEmpty(){
-        if(pointList.size() == 0) return true;
-        else return false;
+        return (pointList.size() == 0);
     }
 
     public void attachHandler(Handler h){
