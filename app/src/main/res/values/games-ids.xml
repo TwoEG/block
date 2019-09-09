@@ -10,4 +10,6 @@ Save this file as res/values/games-ids.xml in your project.
     <string name="package_name" translatable="false">com.example.block</string>
     <!-- leaderboard High Score -->
     <string name="leaderboard_high_score" translatable="false">CgkIlInh3NcZEAIQAQ</string>
+    <!-- admob id -->
+    <string name="admob_app_id" translatable="false">ca-app-pub-7139906817531988~8506257393</string>
 </resources>

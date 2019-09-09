@@ -18,6 +18,11 @@ import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.google.android.gms.ads.AdRequest;
+import com.google.android.gms.ads.AdView;
+import com.google.android.gms.ads.MobileAds;
+import com.google.android.gms.ads.initialization.InitializationStatus;
+import com.google.android.gms.ads.initialization.OnInitializationCompleteListener;
 import com.google.android.gms.auth.api.Auth;
 import com.google.android.gms.auth.api.signin.GoogleSignIn;
 import com.google.android.gms.auth.api.signin.GoogleSignInAccount;
@@ -42,12 +47,13 @@ public class MainActivity extends AppCompatActivity {
     private int bestScore;
     private TextView scoreView;
     private static Myhandler handler;
+    private AdView mAdView;
 
     private GoogleSignInClient mGoogleSignInClient;
 
-    public static final int MSG_SCORE = 32;
-    public static final int MSG_CLEAR = 64;
-    public static final int MSG_MOVING = 128;
+    public static final int MSG_SCORE = 8000;
+    public static final int MSG_CLEAR = 8001;
+    public static final int MSG_MOVING = 8002;
 
     private static int RC_SIGN_IN = 9000;
     private static int RC_LEADERBOARD_UI = 9001;
@@ -56,16 +62,18 @@ public class MainActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+
         mFirebaseAnalytics = FirebaseAnalytics.getInstance(this);
+
         GoogleSignInOptions gso = new GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_GAMES_SIGN_IN)
                 .requestEmail()
                 .build();
         mGoogleSignInClient = GoogleSignIn.getClient(this, gso);
+
         handler = new Myhandler(this);
+        /* game start */
         if(bView == null) {
             initialize();
-            bestScore = loadBestScore();
-            bestView.setText(String.valueOf(bestScore));
             scoreView.setText("0");
             bView.getNextBlock();
             bView.gamestate = BlockView.state.playing;
@@ -74,6 +82,16 @@ public class MainActivity extends AppCompatActivity {
         else {
             initialize();
         }
+        /* ad initialize */
+        MobileAds.initialize(this, new OnInitializationCompleteListener() {
+            @Override
+            public void onInitializationComplete(InitializationStatus initializationStatus) {
+            }
+        });
+        mAdView = findViewById(R.id.adView);
+        AdRequest adRequest = new AdRequest.Builder().build();
+        mAdView.loadAd(adRequest);
+        /* restart button */
         ImageView restart = findViewById(R.id.restart);
         restart.setOnTouchListener(new View.OnTouchListener(){
             @Override
@@ -82,12 +100,14 @@ public class MainActivity extends AppCompatActivity {
                 return false;
             }
         });
+        /* google sign in button */
         findViewById(R.id.sign_in_button).setOnClickListener(new View.OnClickListener(){
             @Override
             public void onClick(View view) {
                 startSignInIntent();
             }
         });
+        /* leaderboard button */
         findViewById(R.id.leaderboard).setOnClickListener(new View.OnClickListener(){
             @Override
             public void onClick(View view) {
@@ -113,7 +133,6 @@ public class MainActivity extends AppCompatActivity {
         }
         super.onDestroy();
     }
-
 
     public static class Myhandler extends Handler {
         private final WeakReference<MainActivity> mActivity;
@@ -154,6 +173,8 @@ public class MainActivity extends AppCompatActivity {
         bView.attachHandler(handler);
         bestView = findViewById(R.id.bestView);
         scoreView = findViewById(R.id.scoreView);
+        bestScore = loadBestScore();
+        bestView.setText(String.valueOf(bestScore));
     }
 
     private void game(final int time){
@@ -192,6 +213,7 @@ public class MainActivity extends AppCompatActivity {
     private void saveBestScore(int bestScore) {
         SharedPreferences preferences = getSharedPreferences("BlockGame", Context.MODE_PRIVATE);
         SharedPreferences.Editor editor = preferences.edit();
+        editor.putInt("BestScore", bestScore);
         if(!editor.commit()){
             Log.v("SAVE","FAIL");
         }
