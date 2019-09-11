@@ -38,7 +38,6 @@ import com.google.android.gms.tasks.Task;
 import com.google.firebase.analytics.FirebaseAnalytics;
 
 import java.lang.ref.WeakReference;
-import java.text.SimpleDateFormat;
 
 public class MainActivity extends AppCompatActivity {
 
@@ -48,7 +47,7 @@ public class MainActivity extends AppCompatActivity {
     private TextView bestView;
     private int bestScore;
     private TextView scoreView;
-    private TextView timerView;
+    private TimerGauge timerG;
     private static Myhandler handler;
     private AdView mAdView;
 
@@ -81,6 +80,8 @@ public class MainActivity extends AppCompatActivity {
         handler = new Myhandler(this);
         /* game start */
         viewInitialize();
+        bestScore = loadBestScore();
+        bestView.setText(String.valueOf(bestScore));
         scoreView.setText("0");
         bView.reset();
         bView.getNextBlock();
@@ -173,7 +174,7 @@ public class MainActivity extends AppCompatActivity {
                 game();
                 break;
             case MSG_UPDATE_TIMER:
-                timerView.setText(String.valueOf(msg.arg1 / 10));
+                timerG.setAndDraw(msg.arg1);
                 break;
 
         }
@@ -184,14 +185,11 @@ public class MainActivity extends AppCompatActivity {
         bView.attachHandler(handler);
         bestView = findViewById(R.id.bestView);
         scoreView = findViewById(R.id.scoreView);
-        timerView = findViewById(R.id.timer);
-        bestScore = loadBestScore();
-        bestView.setText(String.valueOf(bestScore));
+        timerG = findViewById(R.id.timerG);
     }
 
     private void game(){
         if(bView.makeNextBlock()){
-            Log.v("Thread","start");
             Timer timer = new Timer(leftTime, handler);
             gameThread = new Thread(timer);
             gameThread.start();

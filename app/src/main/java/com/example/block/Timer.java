@@ -2,6 +2,7 @@ package com.example.block;
 
 import android.os.Handler;
 import android.os.Message;
+import android.util.Log;
 
 public class Timer implements Runnable {
 
@@ -19,7 +20,7 @@ public class Timer implements Runnable {
         long start = System.currentTimeMillis();
         while(!stop){
             try {
-                Thread.sleep(10);
+                Thread.sleep(5);
             } catch (InterruptedException ex) {
                 Thread.currentThread().interrupt();
                 break;
@@ -30,9 +31,8 @@ public class Timer implements Runnable {
                 handler.sendEmptyMessage(MainActivity.MSG_GAME);
                 break;
             }
-            Message m =  new Message();
-            m.what = MainActivity.MSG_UPDATE_TIMER;
-            m.arg1 = leftTime;
+            Message m =  new Message();            m.what = MainActivity.MSG_UPDATE_TIMER;
+            m.arg1 = (int) (((float) leftTime / (float) Time) * 1000);
             handler.sendMessage(m);
         }
     }

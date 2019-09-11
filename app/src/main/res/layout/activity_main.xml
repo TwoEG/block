@@ -12,14 +12,23 @@
         android:layout_width="0dp"
         android:layout_height="0dp"
         android:layout_marginStart="8dp"
-        android:layout_marginTop="8dp"
         android:layout_marginEnd="8dp"
         android:layout_marginBottom="8dp"
+        app:layout_constraintTop_toBottomOf="@+id/nextBlock"
         app:layout_constraintBottom_toTopOf="@+id/adView"
         app:layout_constraintDimensionRatio="1:1"
+        app:layout_constraintEnd_toStartOf="@+id/timerG"
+        app:layout_constraintStart_toStartOf="parent" />
+
+    <com.example.block.TimerGauge
+        android:id="@+id/timerG"
+        android:layout_width="10dp"
+        android:layout_height="0dp"
+        android:layout_marginEnd="8dp"
+        app:layout_constraintBottom_toBottomOf="@+id/view"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/restart" />
+        app:layout_constraintStart_toEndOf="@id/view"
+        app:layout_constraintTop_toTopOf="@+id/view" />
 
     <LinearLayout
         android:id="@+id/BestLayout"
@@ -101,18 +110,18 @@
         android:layout_marginTop="8dp"
         android:layout_marginEnd="8dp"
         android:layout_marginBottom="8dp"
+        app:layout_constraintVertical_chainStyle="packed"
         android:background="@drawable/rounded_corner"
-        app:layout_constraintBottom_toTopOf="@+id/view"
+        app:layout_constraintBottom_toTopOf="@+id/nextBlock"
         app:layout_constraintEnd_toStartOf="@+id/ScoreLayout"
         app:layout_constraintStart_toEndOf="@+id/BestLayout"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.6"
         app:srcCompat="@drawable/ic_refresh_black_24dp" />
 
     <ImageView
         android:id="@+id/leaderboard"
-        android:layout_width="50dp"
-        android:layout_height="50dp"
+        android:layout_width="40dp"
+        android:layout_height="40dp"
         android:layout_marginStart="8dp"
         android:layout_marginTop="8dp"
         android:layout_marginEnd="8dp"
@@ -166,13 +175,13 @@
         app:layout_constraintTop_toTopOf="parent" />
 
     <TextView
-        android:id="@+id/timer"
-        android:layout_width="wrap_content"
-        android:layout_height="30dp"
+        android:id="@+id/nextBlock"
+        android:layout_width="60dp"
+        android:layout_height="60dp"
         android:layout_marginStart="8dp"
         android:layout_marginEnd="8dp"
         android:layout_marginBottom="8dp"
-        android:textSize="24sp"
+        android:background="@drawable/rounded_corner"
         app:layout_constraintBottom_toTopOf="@+id/view"
         app:layout_constraintEnd_toEndOf="@+id/ScoreLayout"
         app:layout_constraintStart_toStartOf="@+id/BestLayout"
