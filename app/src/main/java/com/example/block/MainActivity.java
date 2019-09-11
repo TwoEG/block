@@ -11,6 +11,7 @@ import android.media.Image;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
+import android.os.SystemClock;
 import android.util.Log;
 import android.view.MotionEvent;
 import android.view.View;
@@ -37,6 +38,7 @@ import com.google.android.gms.tasks.Task;
 import com.google.firebase.analytics.FirebaseAnalytics;
 
 import java.lang.ref.WeakReference;
+import java.text.SimpleDateFormat;
 
 public class MainActivity extends AppCompatActivity {
 
@@ -46,6 +48,7 @@ public class MainActivity extends AppCompatActivity {
     private TextView bestView;
     private int bestScore;
     private TextView scoreView;
+    private TextView timerView;
     private static Myhandler handler;
     private AdView mAdView;
 
@@ -54,9 +57,14 @@ public class MainActivity extends AppCompatActivity {
     public static final int MSG_SCORE = 8000;
     public static final int MSG_CLEAR = 8001;
     public static final int MSG_MOVING = 8002;
+    public static final int MSG_UPDATE_TIMER = 8003;
+    public static final int MSG_GAME = 8004;
 
     private static int RC_SIGN_IN = 9000;
     private static int RC_LEADERBOARD_UI = 9001;
+
+    private int leftTime;
+    private Thread gameThread;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -72,16 +80,13 @@ public class MainActivity extends AppCompatActivity {
 
         handler = new Myhandler(this);
         /* game start */
-        if(bView == null) {
-            initialize();
-            scoreView.setText("0");
-            bView.getNextBlock();
-            bView.gamestate = BlockView.state.playing;
-            game(5000);
-        }
-        else {
-            initialize();
-        }
+        viewInitialize();
+        scoreView.setText("0");
+        bView.reset();
+        bView.getNextBlock();
+        bView.gamestate = BlockView.state.playing;
+        leftTime = 5000;
+        game();
         /* ad initialize */
         MobileAds.initialize(this, new OnInitializationCompleteListener() {
             @Override
@@ -124,13 +129,12 @@ public class MainActivity extends AppCompatActivity {
 
     @Override
     protected void onDestroy() {
-        if(isFinishing()){
-            bView.clearMap();
-            bView.stopThread();
+        if(gameThread != null) {
+            gameThread.interrupt();
         }
-        else{
-            bView.stopThread();
-        }
+        handler.removeCallbacksAndMessages(null);
+        bView.clearMap();
+        bView.stopThread();
         super.onDestroy();
     }
 
@@ -165,31 +169,35 @@ public class MainActivity extends AppCompatActivity {
                 bView.gamestate = BlockView.state.animating;
                 Log.d("MSG","MOVING");
                 break;
+            case MSG_GAME:
+                game();
+                break;
+            case MSG_UPDATE_TIMER:
+                timerView.setText(String.valueOf(msg.arg1 / 10));
+                break;
+
         }
     }
 
-    private void initialize(){
+    private void viewInitialize(){
         bView = findViewById(R.id.view);
         bView.attachHandler(handler);
         bestView = findViewById(R.id.bestView);
         scoreView = findViewById(R.id.scoreView);
+        timerView = findViewById(R.id.timer);
         bestScore = loadBestScore();
         bestView.setText(String.valueOf(bestScore));
     }
 
-    private void game(final int time){
+    private void game(){
         if(bView.makeNextBlock()){
-            handler.postDelayed(new Runnable() {
-                @Override
-                public void run() {
-                    if(time > 2000) {
-                        game(time - 100);
-                    }
-                    else{
-                        game(2000);
-                    }
-                }
-            }, time);
+            Log.v("Thread","start");
+            Timer timer = new Timer(leftTime, handler);
+            gameThread = new Thread(timer);
+            gameThread.start();
+            if(leftTime > 2000) {
+                leftTime = leftTime - 100;
+            }
         }
         else{
             bView.gamestate = BlockView.state.stop;
@@ -205,9 +213,13 @@ public class MainActivity extends AppCompatActivity {
     }
 
     private void restart(){
+        if(gameThread != null) {
+            gameThread.interrupt();
+        }
         handler.removeCallbacksAndMessages(null);
         bView.reset();
-        game(5000);
+        leftTime = 5000;
+        game();
     }
 
     private void saveBestScore(int bestScore) {

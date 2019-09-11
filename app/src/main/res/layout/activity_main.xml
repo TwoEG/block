@@ -11,6 +11,9 @@
         android:id="@+id/view"
         android:layout_width="0dp"
         android:layout_height="0dp"
+        android:layout_marginStart="8dp"
+        android:layout_marginTop="8dp"
+        android:layout_marginEnd="8dp"
         android:layout_marginBottom="8dp"
         app:layout_constraintBottom_toTopOf="@+id/adView"
         app:layout_constraintDimensionRatio="1:1"
@@ -161,5 +164,18 @@
         app:layout_constraintBottom_toBottomOf="@+id/leaderboard"
         app:layout_constraintGuide_percent="0.1"
         app:layout_constraintTop_toTopOf="parent" />
+
+    <TextView
+        android:id="@+id/timer"
+        android:layout_width="wrap_content"
+        android:layout_height="30dp"
+        android:layout_marginStart="8dp"
+        android:layout_marginEnd="8dp"
+        android:layout_marginBottom="8dp"
+        android:textSize="24sp"
+        app:layout_constraintBottom_toTopOf="@+id/view"
+        app:layout_constraintEnd_toEndOf="@+id/ScoreLayout"
+        app:layout_constraintStart_toStartOf="@+id/BestLayout"
+        app:layout_constraintTop_toBottomOf="@+id/restart" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>
