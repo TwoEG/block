@@ -7,6 +7,7 @@ import android.graphics.Canvas;
 import android.graphics.Color;
 import android.graphics.Point;
 import android.graphics.Rect;
+import android.os.Message;
 import android.util.AttributeSet;
 import android.util.Log;
 import android.view.SurfaceHolder;
@@ -46,7 +47,7 @@ public class BlockView extends SurfaceView
     public static state gamestate;
 
     private static final int ColorSize = 7;
-    private static Bitmap[] bitmapList = new Bitmap[ColorSize];
+    public static Bitmap[] bitmapList = new Bitmap[ColorSize];
     private static Bitmap grey;
 
     public static int[] clearXdraw = new int[mapNum];
@@ -164,12 +165,20 @@ public class BlockView extends SurfaceView
         stopThread();
     }
 
-    /* set character of next block */
+    /* set characteristic of next block */
     public void getNextBlock(){
         int posNum = BlockPos.L.size();
         Random gen = new Random();
-        nextBlock = BlockPos.L.get(gen.nextInt(posNum));
-        nextBit = bitmapList[getColorIndex()];
+        int posIndex = gen.nextInt(posNum);
+        int colorIndex = getColorIndex();
+        nextBlock = BlockPos.L.get(posIndex);
+        nextBit = bitmapList[colorIndex];
+
+        Message m = new Message();
+        m.what = MainActivity.MSG_NEXTBLOCK;
+        m.arg1 = posIndex;
+        m.arg2 = colorIndex;
+        handler.sendMessage(m);
         nextPos = null;
     }
 

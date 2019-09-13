@@ -12,23 +12,23 @@
         android:layout_width="0dp"
         android:layout_height="0dp"
         android:layout_marginStart="8dp"
+        android:layout_marginTop="8dp"
         android:layout_marginEnd="8dp"
         android:layout_marginBottom="8dp"
-        app:layout_constraintTop_toBottomOf="@+id/nextBlock"
         app:layout_constraintBottom_toTopOf="@+id/adView"
         app:layout_constraintDimensionRatio="1:1"
-        app:layout_constraintEnd_toStartOf="@+id/timerG"
-        app:layout_constraintStart_toStartOf="parent" />
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/timerG" />
 
     <com.example.block.TimerGauge
         android:id="@+id/timerG"
-        android:layout_width="10dp"
-        android:layout_height="0dp"
-        android:layout_marginEnd="8dp"
-        app:layout_constraintBottom_toBottomOf="@+id/view"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toEndOf="@id/view"
-        app:layout_constraintTop_toTopOf="@+id/view" />
+        android:layout_width="0dp"
+        android:layout_height="10dp"
+        app:layout_constraintBottom_toTopOf="@+id/view"
+        app:layout_constraintEnd_toEndOf="@+id/view"
+        app:layout_constraintStart_toStartOf="@+id/view"
+        app:layout_constraintTop_toBottomOf="@+id/nextBlock" />
 
     <LinearLayout
         android:id="@+id/BestLayout"
@@ -40,12 +40,11 @@
         android:layout_marginBottom="8dp"
         android:background="@drawable/rounded_corner"
         android:orientation="vertical"
-        app:layout_constraintBottom_toTopOf="@+id/view"
-        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintBottom_toBottomOf="@+id/nextBlock"
+        app:layout_constraintEnd_toStartOf="@+id/nextBlock"
         app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="@+id/guideline"
-        app:layout_constraintVertical_bias="1.0">
+        app:layout_constraintTop_toTopOf="@+id/nextBlock">
 
         <TextView
             android:id="@+id/bestText"
@@ -76,12 +75,11 @@
         android:layout_marginBottom="8dp"
         android:background="@drawable/rounded_corner"
         android:orientation="vertical"
-        app:layout_constraintBottom_toTopOf="@+id/view"
+        app:layout_constraintBottom_toBottomOf="@+id/nextBlock"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="1.0"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="@+id/guideline"
-        app:layout_constraintVertical_bias="1.0">
+        app:layout_constraintStart_toEndOf="@+id/nextBlock"
+        app:layout_constraintTop_toTopOf="@+id/nextBlock">
 
         <TextView
             android:id="@+id/scoreText"
@@ -109,13 +107,13 @@
         android:layout_marginStart="8dp"
         android:layout_marginTop="8dp"
         android:layout_marginEnd="8dp"
-        android:layout_marginBottom="8dp"
-        app:layout_constraintVertical_chainStyle="packed"
+        android:layout_marginBottom="16dp"
         android:background="@drawable/rounded_corner"
         app:layout_constraintBottom_toTopOf="@+id/nextBlock"
         app:layout_constraintEnd_toStartOf="@+id/ScoreLayout"
         app:layout_constraintStart_toEndOf="@+id/BestLayout"
         app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_chainStyle="packed"
         app:srcCompat="@drawable/ic_refresh_black_24dp" />
 
     <ImageView
@@ -137,8 +135,8 @@
 
     <ImageView
         android:id="@+id/sign_in_button"
-        android:layout_width="50dp"
-        android:layout_height="50dp"
+        android:layout_width="40dp"
+        android:layout_height="40dp"
         android:layout_marginStart="8dp"
         android:layout_marginTop="8dp"
         android:layout_marginEnd="8dp"
@@ -165,16 +163,7 @@
         ads:layout_constraintEnd_toEndOf="parent"
         ads:layout_constraintStart_toStartOf="parent" />
 
-    <androidx.constraintlayout.widget.Guideline
-        android:id="@+id/guideline"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:orientation="horizontal"
-        app:layout_constraintBottom_toBottomOf="@+id/leaderboard"
-        app:layout_constraintGuide_percent="0.1"
-        app:layout_constraintTop_toTopOf="parent" />
-
-    <TextView
+    <com.example.block.nextBlockView
         android:id="@+id/nextBlock"
         android:layout_width="60dp"
         android:layout_height="60dp"
@@ -182,7 +171,7 @@
         android:layout_marginEnd="8dp"
         android:layout_marginBottom="8dp"
         android:background="@drawable/rounded_corner"
-        app:layout_constraintBottom_toTopOf="@+id/view"
+        app:layout_constraintBottom_toTopOf="@+id/timerG"
         app:layout_constraintEnd_toEndOf="@+id/ScoreLayout"
         app:layout_constraintStart_toStartOf="@+id/BestLayout"
         app:layout_constraintTop_toBottomOf="@+id/restart" />

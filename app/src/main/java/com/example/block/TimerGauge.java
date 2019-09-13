@@ -13,6 +13,7 @@ public class TimerGauge extends View {
     private int width;
     private int height;
     private float ratio;
+    private Paint paint;
 
     public TimerGauge(Context context) {
         this(context, null);
@@ -22,22 +23,22 @@ public class TimerGauge extends View {
     }
     public TimerGauge(Context context, AttributeSet attrs, int defStyleAttr){
         super(context, attrs, defStyleAttr);
+        paint = new Paint();
         ratio = 0;
     }
 
     @Override
     protected void onMeasure(int widthMeasureSpec, int heightMeasureSpec) {
-        width = getMeasuredWidth();
+        width = MeasureSpec.getSize(widthMeasureSpec);
         height = MeasureSpec.getSize(heightMeasureSpec);
         super.onMeasure(widthMeasureSpec, heightMeasureSpec);
     }
 
     @Override
     protected void onDraw(Canvas canvas) {
-        Paint paint = new Paint();
         paint.setARGB(255, (int) (255 * (1 - ratio)), (int) (255 * ratio), 0);
         canvas.drawColor(Color.TRANSPARENT);
-        canvas.drawRect(0, height * (1 - ratio) , width, height, paint);
+        canvas.drawRect(0, 0 , width * ratio, height, paint);
         super.onDraw(canvas);
     }
 

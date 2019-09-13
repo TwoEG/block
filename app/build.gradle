@@ -9,6 +9,13 @@ android {
             keyAlias = 'block'
             keyPassword '2ndwi11'
         }
+
+        release {
+            storeFile file('D:\\Android\\jre\\bin\\block.keystore')
+            storePassword '2ndwi11'
+            keyAlias = 'block'
+            keyPassword '2ndwi11'
+        }
     }
     compileSdkVersion 29
     buildToolsVersion "29.0.0"
@@ -23,7 +30,7 @@ android {
     }
     buildTypes {
         release {
-            minifyEnabled false
+            minifyEnabled true
             proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
         }
     }

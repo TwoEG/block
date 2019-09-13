@@ -18,6 +18,7 @@ public class DrawingThread extends Thread{
 
     private SurfaceHolder holder;
     private boolean stop = false;
+    private Paint paint = new Paint();
 
     public DrawingThread(BlockView bview) {
         holder = bview.getHolder();
@@ -45,7 +46,6 @@ public class DrawingThread extends Thread{
             if(canvas != null) {
                 /* background */
                 canvas.drawColor(Color.parseColor("#BBBBBB"));
-                Paint paint = new Paint();
                 paint.setColor(Color.parseColor("#202020"));
                 RectF r = new RectF(startLeft, startTop, startLeft + mapPixel, startTop + mapPixel);
                 canvas.drawRoundRect(r, 10, 10, paint);

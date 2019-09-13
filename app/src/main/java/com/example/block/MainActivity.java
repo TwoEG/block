@@ -47,6 +47,7 @@ public class MainActivity extends AppCompatActivity {
     private TextView bestView;
     private int bestScore;
     private TextView scoreView;
+    private nextBlockView nbView;
     private TimerGauge timerG;
     private static Myhandler handler;
     private AdView mAdView;
@@ -58,6 +59,7 @@ public class MainActivity extends AppCompatActivity {
     public static final int MSG_MOVING = 8002;
     public static final int MSG_UPDATE_TIMER = 8003;
     public static final int MSG_GAME = 8004;
+    public static final int MSG_NEXTBLOCK = 8005;
 
     private static int RC_SIGN_IN = 9000;
     private static int RC_LEADERBOARD_UI = 9001;
@@ -176,7 +178,9 @@ public class MainActivity extends AppCompatActivity {
             case MSG_UPDATE_TIMER:
                 timerG.setAndDraw(msg.arg1);
                 break;
-
+            case MSG_NEXTBLOCK:
+                nbView.setChar(msg.arg1, msg.arg2);
+                break;
         }
     }
 
@@ -185,6 +189,7 @@ public class MainActivity extends AppCompatActivity {
         bView.attachHandler(handler);
         bestView = findViewById(R.id.bestView);
         scoreView = findViewById(R.id.scoreView);
+        nbView = findViewById(R.id.nextBlock);
         timerG = findViewById(R.id.timerG);
     }
 
@@ -194,7 +199,7 @@ public class MainActivity extends AppCompatActivity {
             gameThread = new Thread(timer);
             gameThread.start();
             if(leftTime > 2000) {
-                leftTime = leftTime - 100;
+                leftTime = leftTime - 50;
             }
         }
         else{
