@@ -1,4 +1,4 @@
-package com.example.block;
+package com.twoeg.block;
 
 import org.junit.Test;
 

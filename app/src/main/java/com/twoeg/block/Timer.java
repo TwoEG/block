@@ -1,8 +1,7 @@
-package com.example.block;
+package com.twoeg.block;
 
 import android.os.Handler;
 import android.os.Message;
-import android.util.Log;
 
 public class Timer implements Runnable {
 

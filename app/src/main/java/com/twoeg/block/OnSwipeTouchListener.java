@@ -1,4 +1,4 @@
-package com.example.block;
+package com.twoeg.block;
 
 import android.content.Context;
 import android.view.GestureDetector;

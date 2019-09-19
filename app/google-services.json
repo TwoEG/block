@@ -1,50 +1,42 @@
 {
   "project_info": {
-    "project_number": "363936680075",
-    "firebase_url": "https://block-game-3a647.firebaseio.com",
-    "project_id": "block-game-3a647",
-    "storage_bucket": "block-game-3a647.appspot.com"
+    "project_number": "399010724712",
+    "firebase_url": "https://tetross-b5a08.firebaseio.com",
+    "project_id": "tetross-b5a08",
+    "storage_bucket": "tetross-b5a08.appspot.com"
   },
   "client": [
     {
       "client_info": {
-        "mobilesdk_app_id": "1:363936680075:android:160371ce5eb1e152b5ec8e",
+        "mobilesdk_app_id": "1:399010724712:android:32b83010243baebe1d34dd",
         "android_client_info": {
-          "package_name": "com.example.block"
+          "package_name": "com.twoeg.block"
         }
       },
       "oauth_client": [
         {
-          "client_id": "363936680075-s5j6pq2t8ukb01qdguankgr2e6l6ibm8.apps.googleusercontent.com",
+          "client_id": "399010724712-g1ui6v4r7ciptjf1gm43ih0fnd82tuif.apps.googleusercontent.com",
           "client_type": 1,
           "android_info": {
-            "package_name": "com.example.block",
-            "certificate_hash": "4f6d8c1b96151ce0f72b42f385ecd708898f6d4b"
+            "package_name": "com.twoeg.block",
+            "certificate_hash": "1bced024f13f53764677c88cdcc32c4c6e0b566a"
           }
         },
         {
-          "client_id": "363936680075-supg6oo11nmsvd3qvcnpka8btu7nqd6a.apps.googleusercontent.com",
-          "client_type": 1,
-          "android_info": {
-            "package_name": "com.example.block",
-            "certificate_hash": "11df7902b5223de5112f8d0dc1eff14a8a84a09e"
-          }
-        },
-        {
-          "client_id": "363936680075-p2vbjqigggdje6an7mggvn16ptkcmro6.apps.googleusercontent.com",
+          "client_id": "399010724712-kbdtfk46umfujb7tikeiagff24kjr0ih.apps.googleusercontent.com",
           "client_type": 3
         }
       ],
       "api_key": [
         {
-          "current_key": "AIzaSyA-GYbmFNsUg1jfuAiEd40n1blAUwvVIKU"
+          "current_key": "AIzaSyCuzLOsl8xEXPAGE0tFoIydIOWFon9H92I"
         }
       ],
       "services": {
         "appinvite_service": {
           "other_platform_oauth_client": [
             {
-              "client_id": "363936680075-p2vbjqigggdje6an7mggvn16ptkcmro6.apps.googleusercontent.com",
+              "client_id": "399010724712-kbdtfk46umfujb7tikeiagff24kjr0ih.apps.googleusercontent.com",
               "client_type": 3
             }
           ]

@@ -1,15 +1,13 @@
-package com.example.block;
+package com.twoeg.block;
 
 import android.content.Context;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.Canvas;
-import android.graphics.Color;
 import android.graphics.Point;
 import android.graphics.Rect;
 import android.os.Message;
 import android.util.AttributeSet;
-import android.util.Log;
 import android.view.SurfaceHolder;
 import android.view.SurfaceView;
 import android.os.Handler;
@@ -393,6 +391,7 @@ public class BlockView extends SurfaceView
         clearMap();
         score = 0;
         gamestate = state.playing;
+        count = ColorSize;
     }
 
     public void clearMap(){

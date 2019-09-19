@@ -20,7 +20,7 @@ android {
     compileSdkVersion 29
     buildToolsVersion "29.0.0"
     defaultConfig {
-        applicationId "com.example.block"
+        applicationId "com.twoeg.block"
         minSdkVersion 19
         targetSdkVersion 29
         versionCode 1
@@ -29,9 +29,14 @@ android {
         vectorDrawables.useSupportLibrary = true
     }
     buildTypes {
+        debug {
+            resValue "string", "adbanner_id", "ca-app-pub-3940256099942544/6300978111"
+        }
         release {
+            resValue "string", "adbanner_id", "ca-app-pub-7139906817531988/8067273694"
             minifyEnabled true
             proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
+            signingConfig signingConfigs.release
         }
     }
 }

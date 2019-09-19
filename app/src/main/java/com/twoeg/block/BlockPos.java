@@ -1,9 +1,8 @@
-package com.example.block;
+package com.twoeg.block;
 
 import android.graphics.Point;
 
 import java.util.ArrayList;
-import java.util.List;
 
 public final class BlockPos {
     private static final ArrayList<Point> z1 = new ArrayList<Point>(){{
