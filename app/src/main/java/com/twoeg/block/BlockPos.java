@@ -121,11 +121,11 @@ public final class BlockPos {
     }};
     public static final ArrayList<ArrayList<Point>> L = new ArrayList<ArrayList<Point>>(){{
         add(z1); add(z2); add(z1); add(z2);
-        add(s1); add(s2); add(s1); add(s2);
         add(o);  add(o);  add(o);  add(o);
-        add(t1); add(t2); add(t3); add(t4);
         add(l1); add(l2); add(l3); add(l4);
-        add(j1); add(j2); add(j3); add(j4);
+        add(s1); add(s2); add(s1); add(s2);
         add(i1); add(i2); add(i1); add(i2);
+        add(j1); add(j2); add(j3); add(j4);
+        add(t1); add(t2); add(t3); add(t4);
     }};
 }

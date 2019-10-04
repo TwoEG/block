@@ -45,6 +45,7 @@ public class BlockView extends SurfaceView
     public static state gamestate;
 
     private static final int ColorSize = 7;
+    private static final int PosSize = 7;
     public static Bitmap[] bitmapList = new Bitmap[ColorSize];
     private static Bitmap grey;
 
@@ -165,10 +166,9 @@ public class BlockView extends SurfaceView
 
     /* set characteristic of next block */
     public void getNextBlock(){
-        int posNum = BlockPos.L.size();
         Random gen = new Random();
-        int posIndex = gen.nextInt(posNum);
         int colorIndex = getColorIndex();
+        int posIndex = getPosIndex();
         nextBlock = BlockPos.L.get(posIndex);
         nextBit = bitmapList[colorIndex];
 
@@ -347,6 +347,28 @@ public class BlockView extends SurfaceView
             if(index == ColorSize){index = 0;}
         }
         leftIndex[index] = 0;
+        return index;
+    }
+
+    /* pos index getter */
+    private static int poscount = PosSize;
+    private static int[] posleftIndex = new int[PosSize];
+    private int getPosIndex(){
+        if(poscount == PosSize){
+            for(int i = 0; i < PosSize; i++){
+                posleftIndex[i] = 1;
+            }
+            poscount = 0;
+        }
+        poscount++;
+        Random gen = new Random();
+        int index = gen.nextInt(PosSize);
+        while(posleftIndex[index] == 0){
+            index++;
+            if(index == PosSize){index = 0;}
+        }
+        posleftIndex[index] = 0;
+        index = index * 4 + gen.nextInt(4);
         return index;
     }
 
