@@ -396,7 +396,7 @@ public class MainActivity extends AppCompatActivity {
         // Set default text message
         // 카톡, 이메일, MMS 다 이걸로 설정 가능
         //String subject = "문자의 제목";
-        String text = "원하는 텍스트를 입력하세요";
+        String text = getString(R.string.play_store_url);
         //intent.putExtra(Intent.EXTRA_SUBJECT, subject);
         intent.putExtra(Intent.EXTRA_TEXT, text);
 

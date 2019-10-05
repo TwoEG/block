@@ -8,6 +8,7 @@ import android.graphics.Point;
 import android.graphics.Rect;
 import android.os.Message;
 import android.util.AttributeSet;
+import android.util.Log;
 import android.view.SurfaceHolder;
 import android.view.SurfaceView;
 import android.os.Handler;
@@ -77,6 +78,7 @@ public class BlockView extends SurfaceView
         setOnTouchListener(new OnSwipeTouchListener(context){
             @Override
             public void onSwipe(float x, float y, int tag) {
+                Log.v("DIRECT", "1");
                 if(gamestate != state.playing){return;}
                 int px = getX(x);
                 int py = getY(y);

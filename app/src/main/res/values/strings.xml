@@ -4,4 +4,5 @@
 
     <string name="BEST">BEST</string>
     <string name="SCORE">SCORE</string>
+    <string name="play_store_url">https://play.google.com/store/apps/details?id=com.twoeg.block&amp;hl=ko</string>
 </resources>

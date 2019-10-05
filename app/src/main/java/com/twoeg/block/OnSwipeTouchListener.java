@@ -1,6 +1,7 @@
 package com.twoeg.block;
 
 import android.content.Context;
+import android.util.Log;
 import android.view.GestureDetector;
 import android.view.GestureDetector.SimpleOnGestureListener;
 import android.view.MotionEvent;
@@ -9,66 +10,98 @@ import android.view.View.OnTouchListener;
 
 public class OnSwipeTouchListener implements OnTouchListener {
 
-    private final GestureDetector gestureDetector;
+    private final int TOP    = 1;
+    private final int BOTTOM = 2;
+    private final int LEFT   = 4;
+    private final int RIGHT  = 8;
+
+    private float firstTouchX;
+    private float firstTouchY;
+    private float SWIPE_THRESHOLD = 50.0f;
+
+    private boolean stop = false;
 
     public OnSwipeTouchListener (Context ctx){
-        gestureDetector = new GestureDetector(ctx, new GestureListener());
     }
 
     @Override
     public boolean onTouch(View v, MotionEvent event) {
-        if (event.getAction() == MotionEvent.ACTION_UP){
-            Up();
-        }
-        return gestureDetector.onTouchEvent(event);
-    }
+        boolean result;
 
-    private final class GestureListener extends SimpleOnGestureListener {
+        switch (event.getAction()) {
+            case MotionEvent.ACTION_DOWN:
+                //Register the first touch on TouchDown and this should not change unless finger goes up.
+                firstTouchX = event.getX();
+                firstTouchY = event.getY();
+                //As the event is consumed, return true
+                Down(event.getX(), event.getY());
+                result = true;
+                stop = false;
+                break;
 
-        private static final int SWIPE_THRESHOLD = 50;
-        private static final int SWIPE_VELOCITY_THRESHOLD = 100;
-
-        private final int TOP    = 1;
-        private final int BOTTOM = 2;
-        private final int LEFT   = 4;
-        private final int RIGHT  = 8;
-
-        @Override
-        public boolean onDown(MotionEvent e) {
-            Down(e.getX(), e.getY());
-            return true;
-        }
-
-        @Override
-        public boolean onFling(MotionEvent e1, MotionEvent e2, float velocityX, float velocityY) {
-            boolean result = false;
-            try {
-                float diffY = e2.getY() - e1.getY();
-                float diffX = e2.getX() - e1.getX();
-                if (Math.abs(diffX) > Math.abs(diffY)) {
-                    if (Math.abs(diffX) > SWIPE_THRESHOLD && Math.abs(velocityX) > SWIPE_VELOCITY_THRESHOLD) {
-                        if (diffX > 0) {
-                            onSwipe(e1.getX(), e1.getY(), RIGHT);
+            case MotionEvent.ACTION_MOVE:
+                if(stop){
+                    result = true;
+                    break;
+                }
+                //CurrentX/Y are the continues changing values of one single touch session. Change
+                //when finger slides on view
+                float currentX = event.getX();
+                float currentY = event.getY();
+                //DeltaX/Y are the difference between current touch and the value when finger first touched screen.
+                //If its negative that means current value is on left side of first touchdown value i.e Going left and
+                //vice versa.
+                float deltaX = currentX - firstTouchX;
+                float deltaY = currentY - firstTouchY;
+                if (Math.abs(deltaX) > Math.abs(deltaY)) {
+                    //Horizontal swipe
+                    if (Math.abs(deltaX) > SWIPE_THRESHOLD) {
+                        if (deltaX > 0) {
+                            //means we are going right
+                            stop = true;
+                            Up();
+                            onSwipe(firstTouchX, firstTouchY, RIGHT);
                         } else {
-                            onSwipe(e1.getX(), e1.getY(), LEFT);
+                            //means we are going left
+                            stop = true;
+                            Up();
+                            onSwipe(firstTouchX, firstTouchY, LEFT);
                         }
                     }
-                    result = true;
-                }
-                else if (Math.abs(diffY) > SWIPE_THRESHOLD && Math.abs(velocityY) > SWIPE_VELOCITY_THRESHOLD) {
-                    if (diffY > 0) {
-                        onSwipe(e1.getX(), e1.getY(), BOTTOM);
-                    } else {
-                        onSwipe(e1.getX(), e1.getY(), TOP);
+                } else {
+                    //It's a vertical swipe
+                    if (Math.abs(deltaY) > SWIPE_THRESHOLD) {
+                        if (deltaY > 0) {
+                            //means we are going down
+                            stop = true;
+                            Up();
+                            onSwipe(firstTouchX, firstTouchY, BOTTOM);
+                        } else {
+                            //means we are going up
+                            stop = true;
+                            Up();
+                            onSwipe(firstTouchX, firstTouchY, TOP);
+                        }
                     }
                 }
-                result = true;
 
-            } catch (Exception exception) {
-                exception.printStackTrace();
-            }
-            return result;
+                result = true;
+                break;
+
+            case MotionEvent.ACTION_UP:
+                //Clean UP
+                firstTouchX = 0.0f;
+                firstTouchY = 0.0f;
+                Up();
+                result = true;
+                break;
+
+            default:
+                result = false;
+                break;
         }
+
+        return result;
     }
 
     /* implementation */
